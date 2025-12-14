@@ -1,7 +1,8 @@
 "use client";
 import styles from "./page.module.css";
-import ConnectWallet from "./components/ConnectWallet";
-import ContractActions from "./components/ContractActions";
+import dynamic from "next/dynamic";
+const ConnectWallet = dynamic(() => import("./components/ConnectWallet"), { ssr: false })
+const ContractActions = dynamic(() => import("./components/ContractActions"), { ssr: false })
 
 export default function Home() {
   return (

@@ -1,5 +1,4 @@
 "use client"
-import { showConnect } from "@stacks/connect"
 import { useState } from "react"
 
 type StxAddr = { mainnet?: string; testnet?: string }
@@ -8,13 +7,16 @@ type FinishPayload = { profile?: { stxAddress?: StxAddr } }
 export default function ConnectWallet() {
   const [address, setAddress] = useState<string | null>(null)
   const onConnect = () => {
-    showConnect({
-      appDetails: { name: "CentriFeed", icon: window.location.origin + "/favicon.ico" },
-      onFinish: (data: FinishPayload) => {
-        const stx = data?.profile?.stxAddress || {}
-        const mainnet = stx.mainnet || stx.testnet || null
-        setAddress(mainnet || null)
-      },
+    import("@stacks/connect").then(({ showConnect }) => {
+      showConnect({
+        appDetails: { name: "CentriFeed", icon: window.location.origin + "/favicon.ico" },
+        onFinish: (payload: unknown) => {
+          const data = payload as FinishPayload
+          const stx = data?.profile?.stxAddress || {}
+          const mainnet = stx.mainnet || stx.testnet || null
+          setAddress(mainnet || null)
+        },
+      })
     })
   }
   return (

@@ -1,6 +1,4 @@
 "use client"
-import { openContractCall } from "@stacks/connect"
-import { StacksMainnet } from "@stacks/network"
 import { uintCV, ClarityValue } from "@stacks/transactions"
 
 const DEPLOYER = "SP2QNSNKR3NRDWNTX0Q7R4T8WGBJ8RE8RA516AKZP"
@@ -12,13 +10,16 @@ const contracts = [
   { name: "funding" },
 ]
 
-function call(contractName: string, functionName: string, args: ClarityValue[] = []) {
+async function call(contractName: string, functionName: string, args: ClarityValue[] = []) {
+  const { openContractCall } = await import("@stacks/connect")
+  const { createNetwork } = await import("@stacks/network")
+  const network = createNetwork("mainnet")
   return openContractCall({
     contractAddress: DEPLOYER,
     contractName,
     functionName,
     functionArgs: args,
-    network: new StacksMainnet(),
+    network,
     appDetails: { name: "CentriFeed", icon: window.location.origin + "/favicon.ico" },
     onFinish: () => {},
   })
