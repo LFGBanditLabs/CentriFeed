@@ -1,7 +1,7 @@
 "use client"
 import { openContractCall } from "@stacks/connect"
 import { StacksMainnet } from "@stacks/network"
-import { uintCV } from "@stacks/transactions"
+import { uintCV, ClarityValue } from "@stacks/transactions"
 
 const DEPLOYER = "SP2QNSNKR3NRDWNTX0Q7R4T8WGBJ8RE8RA516AKZP"
 const contracts = [
@@ -12,7 +12,7 @@ const contracts = [
   { name: "funding" },
 ]
 
-function call(contractName: string, functionName: string, args: any[] = []) {
+function call(contractName: string, functionName: string, args: ClarityValue[] = []) {
   return openContractCall({
     contractAddress: DEPLOYER,
     contractName,
@@ -42,4 +42,3 @@ export default function ContractActions() {
     </div>
   )
 }
-
