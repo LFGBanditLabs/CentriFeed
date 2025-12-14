@@ -1,15 +1,17 @@
 "use client";
 import styles from "./page.module.css";
 import dynamic from "next/dynamic";
+import { useState } from "react";
 const Navbar = dynamic(() => import("./components/Navbar"), { ssr: false })
 const Hero = dynamic(() => import("./components/Hero"), { ssr: false })
 const AdminPanel = dynamic(() => import("./components/AdminPanel"), { ssr: false })
 const TopicCard = dynamic(() => import("./components/TopicCard"), { ssr: false })
 
 export default function Home() {
+  const [address, setAddress] = useState<string | undefined>(undefined)
   return (
     <div className="min-h-screen bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white">
-      <Navbar />
+      <Navbar onAddress={(addr) => setAddress(addr)} />
       <Hero />
       <section id="topics" className="mx-auto max-w-6xl px-6 py-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {[
@@ -23,7 +25,7 @@ export default function Home() {
           <TopicCard key={t.id} topic={t as { id: number; title: string; description: string; stakers: number; treasury: string }} />
         ))}
       </section>
-      <AdminPanel />
+      <AdminPanel address={address} />
       <footer className="mx-auto max-w-6xl px-6 py-10 text-sm text-neutral-500">© CentriFeed</footer>
     </div>
   );
