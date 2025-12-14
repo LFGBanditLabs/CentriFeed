@@ -6,7 +6,7 @@
 (define-private (is-admin (p principal))
   (match (var-get admin)
     admin-p (is-eq p admin-p)
-    none false))
+    false))
 
 (define-public (init-admin (p principal))
   (if (is-none (var-get admin))
