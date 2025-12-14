@@ -4,7 +4,7 @@ import { useState } from "react"
 type StxAddr = { mainnet?: string; testnet?: string }
 type FinishPayload = { profile?: { stxAddress?: StxAddr } }
 
-export default function ConnectWallet() {
+export default function ConnectWallet({ onAddress }: { onAddress?: (addr: string) => void }) {
   const [address, setAddress] = useState<string | null>(null)
   const onConnect = () => {
     import("@stacks/connect").then(({ showConnect }) => {
@@ -15,6 +15,7 @@ export default function ConnectWallet() {
           const stx = data?.profile?.stxAddress || {}
           const mainnet = stx.mainnet || stx.testnet || null
           setAddress(mainnet || null)
+          if (mainnet && onAddress) onAddress(mainnet)
         },
       })
     })
